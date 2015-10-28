@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="24dp">
+
+    <RelativeLayout
+        android:id="@+id/rlUserProfile"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvProfileImage"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            fresco:placeholderImage="@drawable/gray_oval"
+            fresco:roundAsCircle="true"/>
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_toRightOf="@id/sdvProfileImage"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            android:textColor="@color/blue_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvTimeStamp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"
+            android:textColor="@color/light_gray_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlImageInfo"
+        android:layout_below="@id/rlUserProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            fresco:placeholderImage="@drawable/gray_rectangle"
+            fresco:viewAspectRatio="1" />
+
+        <TextView
+            android:id="@+id/tvLike"
+            android:paddingLeft="14dp"
+            android:layout_below="@id/sdvImage"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_small_heart_filled"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            android:textColor="@color/blue_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/tvNameAndCaption"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/tvLike"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>
