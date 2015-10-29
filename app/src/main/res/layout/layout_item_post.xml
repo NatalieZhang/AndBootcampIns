@@ -57,10 +57,53 @@
             fresco:placeholderImage="@drawable/gray_rectangle"
             fresco:viewAspectRatio="1" />
 
-        <TextView
-            android:id="@+id/tvLike"
-            android:paddingLeft="14dp"
+        <ImageButton
+            android:id="@+id/ibLikeBtn"
             android:layout_below="@id/sdvImage"
+            android:layout_marginLeft="14dp"
+            android:background="@null"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_heart"
+            android:layout_width="22dp"
+            android:layout_height="22dp"/>
+
+        <ImageButton
+            android:id="@+id/ibComment"
+            android:layout_below="@id/sdvImage"
+            android:background="@null"
+            android:layout_marginLeft="14dp"
+            android:layout_alignTop="@id/ibLikeBtn"
+            android:layout_toRightOf="@id/ibLikeBtn"
+            android:src="@drawable/ic_comment"
+            android:layout_width="22dp"
+            android:layout_height="22dp"/>
+
+        <ImageButton
+            android:id="@+id/ibShare"
+            android:layout_below="@id/sdvImage"
+            android:background="@null"
+            android:layout_marginRight="14dp"
+            android:layout_alignTop="@id/ibLikeBtn"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_more_dots"
+            android:layout_width="8dp"
+            android:layout_height="22dp"/>
+
+        <View
+            android:id="@+id/separatorLine"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@id/ibLikeBtn"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/tvLikeIcon"
+            android:paddingLeft="14dp"
+            android:layout_below="@id/separatorLine"
             android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_small_heart_filled"
             android:drawablePadding="5dp"
@@ -68,19 +111,40 @@
             android:textSize="14sp"
             android:textColor="@color/blue_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tvNameAndCaption"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:layout_marginTop="4dp"
-            android:layout_below="@id/tvLike"
+            android:layout_below="@id/tvLikeIcon"
             android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tvViewAllComments"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        android:textColor="@color/light_gray_text"
+        android:fontFamily="sans-serif"
+        android:layout_below="@id/rlImageInfo"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/llComments"
+        android:layout_below="@id/tvViewAllComments"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
 
 </RelativeLayout>
