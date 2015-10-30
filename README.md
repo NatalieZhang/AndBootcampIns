@@ -33,12 +33,8 @@ The following **optional** functionality is completed:
 
 ## Video Walkthrough 
 
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of implemented user stories (only shows the stories in assignment 2):
 
-Assignment 1: 
-![Imgur](http://i.imgur.com/fEeC37e.gif)
-
-Assignment 2:
 ![Imgur](http://i.imgur.com/Z696aiD.gif)
 
 
