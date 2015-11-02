@@ -4,17 +4,10 @@
 
 This is the project for the Instagram Client Mockup Project. 
 
-## What's Included as a Starter
-* <tt>com.codepath.instagram.models</tt> => We've built out the models so you can work directly with post, user, and image objects instead of having to deal with json.
-* <tt>com.codepath.instagram.helpers</tt> => Here you can find helpful classes / methods that will come in useful throughout the project. These will be referenced when they are needed.
-* <tt>com.codepath.instagram.persistence</tt> => This is where we've provided some constant definitions for use in the persistence story.
-* <tt>Drawables</tt> => Don't worry about searching for images that will look good. We've already provided a majority of the assets you'll need.
-* <tt>Colors</tt> => We've included some of the colors (in <tt>colors.xml</tt>) that you'll need. You'll noticed that the mocks will refer to the color name instead of the hex value.
-* <tt>Dependencies</tt> => We've pulled in the dependencies you need (with the correct versions) into <tt>build.gradle</tt> so you can skip this step when you come across it in the guides. These include [Fresco](https://github.com/facebook/fresco), [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html), and [android-async-http](http://loopj.com/android-async-http/).
- 
 
 ## User Stories
 The following **required** functionality is completed:
+Assignment 1: 
 * User can scroll through the popular posts from Instagram.
 * For each post displayed, user can see the following details: 
   1. Graphic, Caption, Username, User profile image
@@ -22,10 +15,19 @@ The following **required** functionality is completed:
 * Display each user profile image as a circle.
 * Display a nice default placeholder graphic for each image during loading.
 
+Assignment 2:
 * Connect the app with the Instagram API and get real time data using async-http-client library.
 * Show the last 2 comments for each photo.
 * User can view all comments for a post within a separate activity.
 * User can share an image to their friends or email to themselves.
+
+Assigment 3:
+* User can login to Instagram using OAuth login.
+* User can view their own feed.
+* User can search for a user by username.
+* User can search for a tag.
+  1. On the search screen, there will now be 2 tabs corresponding to "USERS" and "TAGS".
+  2. When performing a search, the user can switch between the "USERS" tab and the "TAGS" tab and see search results for each one.
 
 The following **optional** functionality is completed:
 * Display each post with the same style and proportions as the real Instagram (design mock up provided below).
@@ -33,10 +35,14 @@ The following **optional** functionality is completed:
 
 ## Video Walkthrough 
 
-Here's a walkthrough of implemented user stories (only shows the stories in assignment 2):
+Assigment 3: 
+![Imgur](http://i.imgur.com/dxLxOW8.gif)
 
+Assigment 2:
 ![Imgur](http://i.imgur.com/Z696aiD.gif)
 
+Assigment 1:
+![Imgur](http://i.imgur.com/fEeC37e.gif)
 
 ## Finished Project
 * By the end of the project, you will have built something that looks like the following:
