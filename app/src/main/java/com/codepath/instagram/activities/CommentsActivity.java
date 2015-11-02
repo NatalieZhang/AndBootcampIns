@@ -1,6 +1,5 @@
 package com.codepath.instagram.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,15 +10,16 @@ import android.view.MenuItem;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.adapters.InstagramCommentsAdapter;
+import com.codepath.instagram.core.MainApplication;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramComment;
-import com.codepath.instagram.networking.InstagramClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.apache.http.Header;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
-import cz.msebera.android.httpclient.Header;
 
 public class CommentsActivity extends AppCompatActivity {
     private static final String TAG = "CommentsActivity";
@@ -32,15 +32,10 @@ public class CommentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        Intent data = getIntent();
-
-        String url = "https://api.instagram.com/v1/media/" + data.getStringExtra("mediaId")
-                + "/comments?client_id=f8272bdb0a5549bfbbd44e5026144bba";
-        InstagramClient.getPopularFeed(getJsonHandler(), url);
-
         instagramComments = new ArrayList<>();
         insCommentsAdapter = new InstagramCommentsAdapter(instagramComments, CommentsActivity.this);
 
+        MainApplication.getRestClient().getComments(getIntent().getStringExtra("mediaId"), getJsonHandler());
         RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.rvComments);
         commentsRecyclerView.setAdapter(insCommentsAdapter);
         commentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));

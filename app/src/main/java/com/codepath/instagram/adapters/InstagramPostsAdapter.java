@@ -158,7 +158,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         instagramViewHolder.llComments.addView(commentView);
     }
 
-    public static class InsPostsViewHolder extends RecyclerView.ViewHolder{
+    public static class InsPostsViewHolder extends RecyclerView.ViewHolder {
         public SimpleDraweeView sdvProfileImage;
         public TextView tvUserName;
         public TextView tvTimeStamp;

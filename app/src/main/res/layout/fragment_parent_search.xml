@@ -4,19 +4,19 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
-    <com.codepath.instagram.helpers.NonSwipeableViewPager
-        android:id="@+id/vpNonSwipeViewPager"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tlSearchTabs"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:tabMode="fixed"
+        android:background="@color/search_tab_bar_background"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpSearchContainer"
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="0dp" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tlTabs"
-        android:layout_width="match_parent"
-        style="@style/MyCustomTabLayout"
-        android:layout_height="56dp"
-        app:tabMode="scrollable"
-        android:background="@android:color/black"/>
+        android:layout_height="0dp">
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>
 
