@@ -1,9 +1,14 @@
 package com.codepath.instagram.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,11 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.Services.InstagramClientService;
 import com.codepath.instagram.adapters.InstagramPostsAdapter;
 import com.codepath.instagram.core.MainApplication;
 import com.codepath.instagram.helpers.SimpleVerticalSpacerItemDecoration;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramPost;
+import com.codepath.instagram.models.InstagramPosts;
+import com.codepath.instagram.persistence.InstagramClientDatabase;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -35,21 +43,50 @@ public class PostsFragment extends Fragment {
     private List<InstagramPost> instagramPosts;
     private InstagramPostsAdapter insAdapter;
     private Context context;
+    private SwipeRefreshLayout swipeContainer;
+
+    private InstagramClientDatabase instagramClientDatabase;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
+
+        // start service
+        Intent i = InstagramClientService.newIntent(context);
+        context.startService(i);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
-        context = getActivity();
+
         instagramPosts = new ArrayList<>();
         insAdapter = new InstagramPostsAdapter(instagramPosts, context);
 
-        if (Utils.isNetworkAvailable(context)) {
-            MainApplication.getRestClient().getUserFeed(getJsonHandler());
-        } else {
-            Toast.makeText(context, "Network Unavailable", Toast.LENGTH_SHORT).show();
-        }
+        instagramClientDatabase = InstagramClientDatabase.getInstance(getContext());
 
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchPosts();
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        fetchPosts();
         RecyclerView postsRecyclerView = (RecyclerView) view.findViewById(R.id.rvInsPost);
         postsRecyclerView.setAdapter(insAdapter);
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -59,12 +96,61 @@ public class PostsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter(InstagramClientService.ACTION);
+        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver);
+    }
+
+    // Define the callback for what to do when data is received
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            InstagramPosts serializedInsPosts = (InstagramPosts) intent.getSerializableExtra("serializedInsPosts");
+
+            instagramPosts.clear();
+            instagramPosts.addAll(serializedInsPosts.insPosts);
+            insAdapter.notifyDataSetChanged();
+            swipeContainer.setRefreshing(false);
+        }
+    };
+
+    private void fetchPosts() {
+        if (Utils.isNetworkAvailable(context)) {
+            MainApplication.getRestClient().getUserFeed(getJsonHandler());
+        } else {
+            Toast.makeText(context, "Network Unavailable", Toast.LENGTH_SHORT).show();
+
+            // load cached posts when there is no network connection
+            List<InstagramPost> newPosts = instagramClientDatabase.getAllInstagramPosts();
+            instagramPosts.clear();
+            instagramPosts.addAll(newPosts);
+            insAdapter.notifyDataSetChanged();
+            swipeContainer.setRefreshing(false);
+        }
+    }
+
     private JsonHttpResponseHandler getJsonHandler() {
         return new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                instagramPosts.clear();
                 instagramPosts.addAll(Utils.decodePostsFromJsonResponse(response));
                 insAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+
+                // refresh the cache when get a successful network response back
+                instagramClientDatabase.emptyAllTables();
+                instagramClientDatabase.addInstagramPosts(instagramPosts);
             }
 
             @Override

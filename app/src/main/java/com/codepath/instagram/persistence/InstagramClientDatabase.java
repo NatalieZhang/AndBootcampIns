@@ -149,17 +149,83 @@ public class InstagramClientDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: Implement this method
+        if (oldVersion != newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+            onCreate(db);
+        }
     }
 
     public void emptyAllTables() {
         // TODO: Implement this method to delete all rows from all tables
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Order of deletions is important when foreign key relationships exist.
+            db.delete(TABLE_POST_COMMENTS, null, null);
+            db.delete(TABLE_POSTS, null, null);
+            db.delete(TABLE_COMMENTS, null, null);
+            db.delete(TABLE_IMAGES, null, null);
+            db.delete(TABLE_USERS, null, null);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to delete all posts and users");
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public void addInstagramPosts(List<InstagramPost> posts) {
         // TODO: Implement this method
         // Take a look at the helper methods addImage, addComment, etc as you implement this method
         // It's also a good idea to do this work in a transaction
+
+        if (posts == null) {
+            throw new IllegalArgumentException(String.format("Attemping to add a null list of posts to %s", DATABASE_NAME));
+        }
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Long userId;
+            Long imageId = Long.valueOf(0);
+            Long postId;
+            for (InstagramPost post : posts) {
+                userId = addorUpdateUser(post.user);
+
+                InstagramImage image = post.image;
+                if (image != null) {
+                    imageId = addImage(image);
+                }
+
+                ContentValues values = new ContentValues();
+                values.put(KEY_POST_MEDIA_ID, post.mediaId);
+                values.put(KEY_POST_USER_ID_FK, userId);
+                values.put(KEY_POST_IMAGE_ID_FK, imageId);
+                values.put(KEY_POST_CAPTION, post.caption);
+                values.put(KEY_POST_LIKES_COUNT, post.likesCount);
+                values.put(KEY_POST_COMMENTS_COUNT, post.commentsCount);
+                values.put(KEY_POST_CREATED_TIME, post.createdTime);
+
+                postId = db.insertOrThrow(TABLE_POSTS, null, values);
+
+                List<InstagramComment> comments = post.comments;
+                if (comments != null) {
+                    for (InstagramComment comment : comments) {
+                        addComment(comment, Long.valueOf(postId));
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Error while trying to add post to database");
+        } finally {
+            db.endTransaction();
+        }
     }
+
+
+
 
     // Poor man's "upsert".
     // Since SQLite doesn't support "upsert" we need to fall back on an attempt to UPDATE (in case the
