@@ -29,11 +29,20 @@ Assigment 3:
   1. On the search screen, there will now be 2 tabs corresponding to "USERS" and "TAGS".
   2. When performing a search, the user can switch between the "USERS" tab and the "TAGS" tab and see search results for each one.
 
+Assigment 4:
+* Add pull-to-refresh for the home feed with SwipeRefreshLayout.
+* User can open the Instagram client offline and see last loaded feed.
+   Each media item is persisted into SQlite and can be displayed from the local DB.
+* Create a background service to make the network request, load items into the DB and populate the view (for the user's home feed).
+
 The following **optional** functionality is completed:
 * Display each post with the same style and proportions as the real Instagram (design mock up provided below).
 
 
 ## Video Walkthrough 
+
+Assgiment 4:
+![Imgur](http://i.imgur.com/cUBVjMF.gif)
 
 Assigment 3: 
 ![Imgur](http://i.imgur.com/dxLxOW8.gif)
