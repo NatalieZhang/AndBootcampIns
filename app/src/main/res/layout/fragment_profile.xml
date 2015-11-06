@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/rlProfileInfo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvImageInProfilePage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:roundAsCircle="true"/>
+
+        <TextView
+            android:id="@+id/tvPostCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingTop="8dp"
+            android:textColor="@android:color/black"
+            android:layout_toRightOf="@id/sdvImageInProfilePage"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvPostsInProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:paddingTop="2dp"
+            android:paddingLeft="30dp"
+            android:layout_alignLeft="@id/tvPostCount"
+            android:layout_below="@id/tvPostCount"
+            android:layout_alignBottom="@id/sdvImageInProfilePage"
+            android:textSize="14sp"
+            android:text="posts"
+            android:textColor="@color/light_gray_text"/>
+
+        <TextView
+            android:id="@+id/tvFollowersCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingLeft="60dp"
+            android:textColor="@android:color/black"
+            android:layout_toRightOf="@id/tvPostCount"
+            android:layout_alignBottom="@id/tvPostCount"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvFollowersInProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:paddingTop="2dp"
+            android:paddingLeft="60dp"
+            android:layout_alignLeft="@id/tvFollowersCount"
+            android:layout_below="@id/tvFollowersCount"
+            android:layout_alignBottom="@id/sdvImageInProfilePage"
+            android:textSize="14sp"
+            android:text="followers"
+            android:textColor="@color/light_gray_text"/>
+
+        <TextView
+            android:id="@+id/tvFollowingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingLeft="60dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_toRightOf="@id/tvFollowersCount"
+            android:layout_alignBottom="@id/tvPostCount"/>
+
+        <TextView
+            android:id="@+id/tvFollowingInProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:paddingTop="2dp"
+            android:paddingLeft="60dp"
+            android:layout_alignLeft="@id/tvFollowingCount"
+            android:layout_below="@id/tvFollowingCount"
+            android:layout_alignBottom="@id/sdvImageInProfilePage"
+            android:textSize="14sp"
+            android:text="following"
+            android:textColor="@color/light_gray_text"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/flProfilePostContainer"
+        android:layout_below="@id/rlProfileInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+</RelativeLayout>

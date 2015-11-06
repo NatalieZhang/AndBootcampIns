@@ -152,7 +152,7 @@ public class Utils {
         context.startActivity(Intent.createChooser(shareIntent, "Share Image"));
     }
 
-    private static JSONArray getDataJsonArray(JSONObject jsonObject) {
+    public static JSONArray getDataJsonArray(JSONObject jsonObject) {
         JSONArray jsonArray = null;
         if (jsonObject != null) {
             jsonArray = jsonObject.optJSONArray("data");

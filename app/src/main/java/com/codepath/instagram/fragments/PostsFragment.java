@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.Services.InstagramClientService;
+import com.codepath.instagram.abstracts.EndlessScrollListener;
 import com.codepath.instagram.adapters.InstagramPostsAdapter;
 import com.codepath.instagram.core.MainApplication;
 import com.codepath.instagram.helpers.SimpleVerticalSpacerItemDecoration;
@@ -29,6 +30,7 @@ import com.codepath.instagram.persistence.InstagramClientDatabase;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class PostsFragment extends Fragment {
     private InstagramPostsAdapter insAdapter;
     private Context context;
     private SwipeRefreshLayout swipeContainer;
+    private String currentUrl;
 
     private InstagramClientDatabase instagramClientDatabase;
 
@@ -87,13 +90,41 @@ public class PostsFragment extends Fragment {
                 android.R.color.holo_red_light);
 
         fetchPosts();
-        RecyclerView postsRecyclerView = (RecyclerView) view.findViewById(R.id.rvInsPost);
+        final RecyclerView postsRecyclerView = (RecyclerView) view.findViewById(R.id.rvInsPost);
         postsRecyclerView.setAdapter(insAdapter);
-        postsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        postsRecyclerView.setLayoutManager(layoutManager);
         SimpleVerticalSpacerItemDecoration itemDecoration = new SimpleVerticalSpacerItemDecoration(24);
         postsRecyclerView.addItemDecoration(itemDecoration);
 
+
+        postsRecyclerView.addOnScrollListener(new EndlessScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                MainApplication.getRestClient().getMoreFeeds(getMoreHandler(), currentUrl);
+            }
+        });
+
         return view;
+    }
+
+    private JsonHttpResponseHandler getMoreHandler() {
+        return new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                instagramPosts.addAll(Utils.decodePostsFromJsonResponse(response));
+                insAdapter.notifyDataSetChanged();
+
+                try {
+                    JSONObject jsonObject = response.getJSONObject("pagination");
+                    currentUrl = jsonObject.getString("next_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                instagramClientDatabase.addInstagramPosts(instagramPosts);
+            }
+        };
     }
 
     @Override
@@ -127,6 +158,8 @@ public class PostsFragment extends Fragment {
     private void fetchPosts() {
         if (Utils.isNetworkAvailable(context)) {
             MainApplication.getRestClient().getUserFeed(getJsonHandler());
+            // get next url
+
         } else {
             Toast.makeText(context, "Network Unavailable", Toast.LENGTH_SHORT).show();
 
@@ -147,6 +180,14 @@ public class PostsFragment extends Fragment {
                 instagramPosts.addAll(Utils.decodePostsFromJsonResponse(response));
                 insAdapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
+
+                try {
+                    JSONObject jsonObject = response.getJSONObject("pagination");
+                    currentUrl = jsonObject.getString("next_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
                 // refresh the cache when get a successful network response back
                 instagramClientDatabase.emptyAllTables();

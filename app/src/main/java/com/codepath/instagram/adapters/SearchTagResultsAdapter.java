@@ -1,6 +1,7 @@
 package com.codepath.instagram.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.activities.PhotoGridActivity;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramSearchTag;
 
@@ -40,6 +42,15 @@ public class SearchTagResultsAdapter extends RecyclerView.Adapter<SearchTagResul
 
         holder.tvSearchTag.setText("#" + tag.tag);
         holder.tvTagCount.setText(Utils.formatNumberForDisplay(tag.count) + " posts");
+
+        holder.tvSearchTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, PhotoGridActivity.class);
+                i.putExtra("searchTag", tag.tag);
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.codepath.instagram.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.activities.PhotoGridActivity;
 import com.codepath.instagram.models.InstagramUser;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,12 +38,22 @@ public class SearchUserResultsAdapter extends RecyclerView.Adapter<SearchUserRes
     }
 
     @Override
-    public void onBindViewHolder(SearchUserViewHolder holder, int position) {
+    public void onBindViewHolder(SearchUserViewHolder holder, final int position) {
         final InstagramUser user = insUsers.get(position);
 
         holder.sdvUserImage.setImageURI(Uri.parse(user.profilePictureUrl));
         holder.tvUserName.setText(user.userName);
         holder.tvFullName.setText(user.fullName);
+
+        holder.sdvUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, PhotoGridActivity.class);
+                i.putExtra("position", position);
+                i.putExtra("userId", user.userId);
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override

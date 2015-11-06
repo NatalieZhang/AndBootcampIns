@@ -44,6 +44,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     public InsPostsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View insView = inflater.inflate(R.layout.layout_item_post, viewGroup, false);
+
         InsPostsViewHolder insViewHolder = new InsPostsViewHolder(insView);
 
         return insViewHolder;

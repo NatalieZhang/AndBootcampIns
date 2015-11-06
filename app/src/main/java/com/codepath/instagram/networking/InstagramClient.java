@@ -1,6 +1,7 @@
 package com.codepath.instagram.networking;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.instagram.helpers.Constants;
 import com.codepath.oauth.OAuthBaseClient;
@@ -48,4 +49,26 @@ public class InstagramClient extends OAuthBaseClient {
     public void getSearchedTags(JsonHttpResponseHandler responseHandler, String searchTerm) {
         client.get(REST_URL + "/tags/search?q=" + searchTerm, responseHandler);
     }
+
+    public void getUserPhotos(JsonHttpResponseHandler responseHandler, String userId) {
+        client.get(REST_URL + "/users/" + userId + "/media/recent/", responseHandler);
+    }
+
+    public void getSelfPhotos(JsonHttpResponseHandler responseHandler) {
+        client.get(REST_URL + "/users/self/media/recent/", responseHandler);
+    }
+
+    public void getTagPhotos(JsonHttpResponseHandler responseHandler, String searchTag) {
+        Log.e("haha", "haha: url "+ REST_URL + "tags/" + searchTag + "/media/recent/");
+        client.get(REST_URL + "/tags/" + searchTag + "/media/recent/", responseHandler);
+    }
+
+    public void getSelfUser(JsonHttpResponseHandler responseHandler) {
+        client.get(REST_URL + "/users/self", responseHandler);
+    }
+
+    public void getMoreFeeds(JsonHttpResponseHandler responseHandler, String url) {
+        client.get(url, responseHandler);
+    }
+
 }
