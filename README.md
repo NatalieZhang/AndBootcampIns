@@ -35,11 +35,20 @@ Assigment 4:
    Each media item is persisted into SQlite and can be displayed from the local DB.
 * Create a background service to make the network request, load items into the DB and populate the view (for the user's home feed).
 
+Assigment 5:
+* Add the Profile Page to your TabLayout to see your own posts, follower count, following count. 
+* Replace the ActionBar with a ToolBar and style it to match the actual Instagram app. 
+* Add infinite scroll to your home feed. 
+
+
 The following **optional** functionality is completed:
 * Display each post with the same style and proportions as the real Instagram (design mock up provided below).
 
 
 ## Video Walkthrough 
+
+Assigment 5: 
+![Imgur](http://i.imgur.com/lQWsI4C.gif)
 
 Assgiment 4:
 ![Imgur](http://i.imgur.com/cUBVjMF.gif)
